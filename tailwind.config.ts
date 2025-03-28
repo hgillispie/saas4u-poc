@@ -89,7 +89,12 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require('@tailwindcss/forms')({
+      strategy: 'class', // Optional - only if you want to use class-based form styling
+    }),
+  ],
 } satisfies Config;
 
 export default config;

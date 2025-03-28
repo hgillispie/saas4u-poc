@@ -32,8 +32,8 @@ export function Header({ headerContent }: any) {
             <Button variant="link" asChild>
               <Link href="/" passHref>
                 <img
-                  className="h-6"
-                  src="https://cdn.builder.io/api/v1/image/assets%2Fa87584e551b6472fa0f0a2eb10f2c0ff%2F692369ff646645349e68a86b43fc7a38"
+                  className="h-8"
+                  src="https://res.cloudinary.com/stunnahunna/image/upload/v1742925995/Screenshot_2025-03-25_at_2.06.09_PM_szh47l.png"
                   alt="Builder.io Logo"
                   loading="lazy"
                 />

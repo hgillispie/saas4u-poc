@@ -1,24 +1,41 @@
-"use client"
-import { ComponentProps } from "react";
-import { BuilderComponent, Builder, builder, useIsPreviewing } from "@builder.io/react";
-import DefaultErrorPage from "next/error";
-import "../builder-registry";
+'use client';
 
-builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
+import { BuilderComponent, builder } from '@builder.io/react';
+import { useEffect, useState } from 'react';
+import { useLocale } from '../context/LocaleContext';
 
-type BuilderPageProps = ComponentProps<typeof BuilderComponent>;
+// Initialize Builder.io on the client side
+if (typeof window !== 'undefined') {
+  builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
+}
 
-export function RenderBuilderContent(props: BuilderPageProps) {
-  // Call the useIsPreviewing hook to determine if
-  // the page is being previewed in Builder
-  const isPreviewing = useIsPreviewing();///(Builder.isPreviewing || Builder.isEditing)
-  // If "content" has a value or the page is being previewed in Builder,
-  // render the BuilderComponent with the specified content and model props.
-  if (props.content || isPreviewing) {
-    return <BuilderComponent {...props} />;
+interface RenderBuilderContentProps {
+  content: any;
+  model: string;
+  options?: any;
+}
+
+export function RenderBuilderContent({ content, model, options = {} }: RenderBuilderContentProps) {
+  const [mounted, setMounted] = useState(false);
+  const { locale } = useLocale();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
   }
-  // If the "content" is falsy and the page is
-  // not being previewed in Builder, render the
-  // DefaultErrorPage with a 404.
-  return <DefaultErrorPage statusCode={404} />;
+
+  return (
+    <BuilderComponent
+      model={model}
+      content={content}
+      options={{
+        ...options,
+        locale,
+        enrich: true,
+      }}
+    />
+  );
 }
